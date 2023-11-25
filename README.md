@@ -26,7 +26,7 @@ Cim Behavior Improvement is a mod for Cities Skylines 2 that endeavors to improv
 Place the `CimBehaviorImprovements.dll` file in your BepInEx `Plugins` folder.
 
 ## Known Issues
-- [ ] Apply to school logic not working
+- [x] ~~Apply to school logic not working~~
 
 ## Changelog
 - v0.0.1 (11/24/2023)
