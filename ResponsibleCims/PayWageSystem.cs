@@ -106,7 +106,7 @@ namespace ResponsibleCims
                         _ => economyParameters.m_UnemploymentBenefit / kUpdatesPerDay,
                     };
 
-                    if (isStudent) //Student housing stipend
+                    if (isStudent && age == CitizenAge.Adult) //Student housing stipend
                     {
                         num2 = 1000;
                     }
