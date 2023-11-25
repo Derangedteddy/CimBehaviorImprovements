@@ -98,22 +98,17 @@ namespace ResponsibleCims
                 {
                     return;
                 }
+
                 NativeArray<Entity> nativeArray = chunk.GetNativeArray(m_EntityType);
                 NativeArray<Citizen> nativeArray2 = chunk.GetNativeArray(ref m_CitizenType);
                 NativeArray<Worker> nativeArray3 = chunk.GetNativeArray(ref m_WorkerType);
                 DynamicBuffer<CityModifier> dynamicBuffer = m_CityModifiers[m_City];
                 NativeArray<HouseholdMember> householdMembers = chunk.GetNativeArray(ref m_HouseholdMemberType);
                 
-
                 Unity.Mathematics.Random random = m_RandomSeed.GetRandom(unfilteredChunkIndex);
-                
-                BepInEx.Logging.ManualLogSource logger = new ManualLogSource("ApplyToSchoolSystem Logger");
-                BepInEx.Logging.Logger.Sources.Add(logger);
 
                 for (int i = 0; i < chunk.Count; i++)
-                {
-                    string message = "";
-                    
+                {                    
                     Citizen citizen = nativeArray2[i];
                     CitizenAge age = citizen.GetAge();
                     if (age == CitizenAge.Elderly)
@@ -142,44 +137,28 @@ namespace ResponsibleCims
                     float willingness = citizen.GetPseudoRandom(CitizenPseudoRandom.StudyWillingness).NextFloat();
                     float enteringProbability = GetEnteringProbability(age, nativeArray3.IsCreated, num3, citizen.m_WellBeing, willingness, dynamicBuffer);
 
-                    try
+                    if (age == CitizenAge.Adult)
                     {
-                        if (age == CitizenAge.Adult)
+                        if(m_HouseholdCitizens.HasBuffer(household))
                         {
-                            logger.LogInfo("Adult Cim detected.");
+                            DynamicBuffer<HouseholdCitizen> householdCitizens = m_HouseholdCitizens[household];
 
-                            if(m_HouseholdCitizens.HasBuffer(household))
+                            for (var j = 0; j < householdCitizens.Length; j++)
                             {
-                                logger.LogInfo("Has buffer.  Populating DynamicBuffer.");
-                                DynamicBuffer<HouseholdCitizen> householdCitizens = m_HouseholdCitizens[household];
-                                logger.LogInfo("Got householdCitizens DynamicBuffer.");
+                                Citizen citizen2 = m_EntityCitizen[householdCitizens[j].m_Citizen];
+                                CitizenAge age2 = citizen2.GetAge();
 
-                                for (var j = 0; j < householdCitizens.Length; j++)
+                                if(age2 == CitizenAge.Child || age2 == CitizenAge.Teen || age2 == CitizenAge.Elderly)
                                 {
-                                    logger.LogInfo("Inside for loop.");
-                                    Citizen citizen2 = m_EntityCitizen[householdCitizens[j].m_Citizen];
-                                    logger.LogInfo("Got citizen2.");
-                                    CitizenAge age2 = citizen2.GetAge();
-                                    logger.LogInfo("Got age2.");
-
-                                    if(age2 == CitizenAge.Child || age2 == CitizenAge.Teen || age2 == CitizenAge.Elderly)
-                                    {
-                                        logger.LogInfo("Inside if statement");
-                                        message += "Citizen has a dependent.  enteringProbability reduced from " + enteringProbability.ToString() + " to ";
-                                        enteringProbability /= 4;
-                                        message += enteringProbability.ToString() + ".  ";
-                                    }
+                                    enteringProbability /= 4;
                                 }
                             }
                         }
-                    } catch (Exception e)
-                    {
-                        logger.LogError(e.Message + " " + e.Source);
                     }
+
 
                     if ((float)num2 > 100f * dropoutProbability && (float)num < 100f * enteringProbability)
                     {
-                        message += "Citizen converted to SchoolSeeker.  ";
                         if (m_PropertyRenters.HasComponent(household) && !m_TouristHouseholds.HasComponent(household))
                         {
                             Entity property = m_PropertyRenters[household].m_Property;
@@ -204,19 +183,11 @@ namespace ResponsibleCims
                     }
                     else
                     {
-                        message += "Citizen not converted to SchoolSeeker.  ";
                         citizen.SetFailedEducationCount(math.min(3, failedEducationCount + 1));
                         nativeArray2[i] = citizen;
                     }
-
-                    
-                    
-                    logger.LogInfo(message);
-                    message = "";
                     
                 }
-
-                BepInEx.Logging.Logger.Sources.Remove(logger);
             }
 
             void IJobChunk.Execute(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask, in v128 chunkEnabledMask)
