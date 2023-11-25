@@ -16,7 +16,12 @@ Cim Behavior Improvement is a mod for Cities Skylines 2 that endeavors to improv
     - The game's default is to divide the chance by 2 for students.
   - If the Cim's household size is >= 4, the chance of having a child is divided by four.
     - This significantly reduces the chance that extremely large families will form, and keeps the household size reasonable.
-
+### Student stipend
+  - Students now receive a stipend of $1,000/month for housing costs.  Previously, they received the default unemployment benefit, which was too low to avoid high rent warnings in most cases.
+  - This should be enough for most students to survive with a small household, but students with multiple children will still struggle.
+### Supresses high rent warnings for households with significant savings
+  - Suppresses high rent warnings for households that have more than $1,000 cash on hand.  These households are not in immediate jeopardy and may recover soon, so it doesn't make sense to show a warning for a household that can continue paying rent for several months or years.
+  - Note: The dev tools do not show the amount of cash on hand for households.  The metrics it displays are different values that take more than just cash into consideration, such as the value of cars, other resources, etc.  I have verified the cash-on-hand calculation is accurate in the back-end.
 
 ## Requirements and Compatibility
 - Cities Skylines II version 1.0.14f1 (November 16th 2023 update)
