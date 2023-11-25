@@ -26,8 +26,6 @@ class Patches
     [HarmonyPrefix]
     static bool OnUpdate(Game.Simulation.BirthSystem __instance)
     {
-        // For some reason, the cloned TrafficLightInitializationSystem never receives calls to update. So we have to do it manually.
-        // Could be something with the EntityQuery. I'm not able to find out the reason behind it.
         __instance.World.GetOrCreateSystemManaged<ResponsibleCims.BirthSystem>().Update();
         return false;
     }
@@ -41,14 +39,40 @@ class Patches
         return true; // Allow the original method to run so that we only receive update requests when necessary
     }
 
-    //[HarmonyPatch(typeof(Game.Simulation.ApplyToSchoolSystem), "OnUpdate")]
-    //[HarmonyPrefix]
-    //static bool OnUpdate(Game.Simulation.ApplyToSchoolSystem __instance)
-    //{
-    //    // For some reason, the cloned TrafficLightInitializationSystem never receives calls to update. So we have to do it manually.
-    //    // Could be something with the EntityQuery. I'm not able to find out the reason behind it.
-    //    __instance.World.GetOrCreateSystemManaged<ResponsibleCims.ApplyToSchoolSystem>().Update();
-    //    return false;
-    //}
+    [HarmonyPatch(typeof(Game.Simulation.PayWageSystem), "OnCreate")]
+    [HarmonyPrefix]
+    static bool OnCreate(Game.Simulation.PayWageSystem __instance)
+    {
+        __instance.World.GetOrCreateSystemManaged<ResponsibleCims.PayWageSystem>();
+        __instance.World.GetOrCreateSystemManaged<Game.UpdateSystem>().UpdateAt<ResponsibleCims.PayWageSystem>(Game.SystemUpdatePhase.GameSimulation);
+        return true; // Allow the original method to run so that we only receive update requests when necessary
+    }
+
+    [HarmonyPatch(typeof(Game.Simulation.PayWageSystem), "OnUpdate")]
+    [HarmonyPrefix]
+    static bool OnUpdate(Game.Simulation.PayWageSystem __instance)
+    {
+        __instance.World.GetOrCreateSystemManaged<ResponsibleCims.PayWageSystem>().Update();
+        return false;
+    }
+
+    [HarmonyPatch(typeof(Game.Simulation.RentAdjustSystem), "OnCreate")]
+    [HarmonyPrefix]
+    static bool OnCreate(Game.Simulation.RentAdjustSystem __instance)
+    {
+        __instance.World.GetOrCreateSystemManaged<ResponsibleCims.RentAdjustSystem>();
+        __instance.World.GetOrCreateSystemManaged<Game.UpdateSystem>().UpdateAt<ResponsibleCims.RentAdjustSystem>(Game.SystemUpdatePhase.GameSimulation);
+        return true; // Allow the original method to run so that we only receive update requests when necessary
+    }
+
+    [HarmonyPatch(typeof(Game.Simulation.RentAdjustSystem), "OnUpdate")]
+    [HarmonyPrefix]
+    static bool OnUpdate(Game.Simulation.RentAdjustSystem __instance)
+    {
+        __instance.World.GetOrCreateSystemManaged<ResponsibleCims.RentAdjustSystem>().Update();
+        return false;
+    }
+
+
 }
 

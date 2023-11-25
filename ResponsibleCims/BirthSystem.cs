@@ -163,24 +163,20 @@ namespace ResponsibleCims
                         if(m_Students.HasComponent(entity))
                         {
                             num /= 4;
-                            //message += "Citizen is a student.  Birth chance reduced to " + num.ToString() + ".  ";
                         }
 
                         if (dynamicBuffer.Length >= 4)
                         {
                             num /= 4;
-                            //message += "Family size of " + dynamicBuffer.Length.ToString() + ".  Birth chance reduced to " + num.ToString() + ".  ";
                         }
 
                         if (citizen.GetAgeInDays(m_SimulationFrame, m_TimeData) >= 63)
                         {
                             num /= 4;
-                            //message += "Citizen is >= 63 days old. Age: " + citizen.GetAgeInDays(m_SimulationFrame, m_TimeData).ToString() + ".  ";
                         }
                     }
                     if (random.NextInt(1000 * kUpdatesPerDay) < num)
                     {
-                        //message += "Citizen of age " + citizen.GetAgeInDays(m_SimulationFrame, m_TimeData) + " had a child with birth chance of " + num.ToString() + ".";
                         SpawnBaby(unfilteredChunkIndex, household, ref random, entity2);
                         m_StatisticsEventQueue.Enqueue(new StatisticsEvent
                         {
@@ -188,16 +184,6 @@ namespace ResponsibleCims
                             m_Change = 1
                         });
                     }
-                    else
-                    {
-                        //message += "Citizen did not have a child.";
-                    }
-                   
-                    //BepInEx.Logging.ManualLogSource logger = new ManualLogSource("Birth Logger");
-                    //BepInEx.Logging.Logger.Sources.Add(logger);
-                    //logger.LogInfo(message);
-                    //message = "";
-                    //BepInEx.Logging.Logger.Sources.Remove(logger);
 
                 }
             }

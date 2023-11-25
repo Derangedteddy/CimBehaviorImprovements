@@ -156,7 +156,6 @@ namespace ResponsibleCims
                         }
                     }
 
-
                     if ((float)num2 > 100f * dropoutProbability && (float)num < 100f * enteringProbability)
                     {
                         if (m_PropertyRenters.HasComponent(household) && !m_TouristHouseholds.HasComponent(household))
@@ -286,7 +285,6 @@ namespace ResponsibleCims
         [Preserve]
         protected override void OnCreate()
         {
-            string message = "Creating ApplyToSchoolSystem...";
             base.OnCreate();
             m_SimulationSystem = base.World.GetOrCreateSystemManaged<SimulationSystem>();
             m_EndFrameBarrier = base.World.GetOrCreateSystemManaged<EndFrameBarrier>();
@@ -311,23 +309,11 @@ namespace ResponsibleCims
             RequireForUpdate<EconomyParameterData>();
             RequireForUpdate<TimeData>();
 
-            BepInEx.Logging.ManualLogSource logger = new ManualLogSource("ApplyToSchoolSystem Logger");
-            BepInEx.Logging.Logger.Sources.Add(logger);
-            logger.LogInfo(message);
-            message = "";
-            BepInEx.Logging.Logger.Sources.Remove(logger);
-
         }
 
         [Preserve]
         protected override void OnUpdate()
         {
-            string message = "Entered OnUpdate...";
-            BepInEx.Logging.ManualLogSource logger = new ManualLogSource("ApplyToSchoolSystem Logger");
-            BepInEx.Logging.Logger.Sources.Add(logger);
-            logger.LogInfo(message);
-            message = "";
-
             uint updateFrameWithInterval = SimulationUtils.GetUpdateFrameWithInterval(m_SimulationSystem.frameIndex, (uint)GetUpdateInterval(SystemUpdatePhase.GameSimulation), 16);
             __TypeHandle.__Game_Citizens_TouristHousehold_RO_ComponentLookup.Update(ref base.CheckedStateRef);
             __TypeHandle.__Game_City_ServiceFee_RO_BufferLookup.Update(ref base.CheckedStateRef);
@@ -370,9 +356,6 @@ namespace ResponsibleCims
             ApplyToSchoolJob jobData = applyToSchoolJob;
             base.Dependency = JobChunkExtensions.ScheduleParallel(jobData, m_CitizenGroup, base.Dependency);
             m_EndFrameBarrier.AddJobHandleForProducer(base.Dependency);
-
-
-            BepInEx.Logging.Logger.Sources.Remove(logger);
         }
 
         public static float GetEnteringProbability(CitizenAge age, bool worker, int level, int wellbeing, float willingness, DynamicBuffer<CityModifier> cityModifiers)
