@@ -75,6 +75,9 @@ namespace ResponsibleCims
             public ComponentLookup<TouristHousehold> m_TouristHouseholds;
 
             [ReadOnly]
+            public ComponentLookup<Citizen> m_EntityCitizen;
+
+            [ReadOnly]
             public RandomSeed m_RandomSeed;
 
             public uint m_UpdateFrameIndex;
@@ -88,7 +91,6 @@ namespace ResponsibleCims
             public TimeData m_TimeData;
 
             public EntityCommandBuffer.ParallelWriter m_CommandBuffer;
-            public EntityManager m_EntityManager;
 
             public void Execute(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask, in v128 chunkEnabledMask)
             {
@@ -146,25 +148,28 @@ namespace ResponsibleCims
                         {
                             logger.LogInfo("Adult Cim detected.");
 
-                            for (var j = 0; j < householdMembers.Length; j++)
+                            if(m_HouseholdCitizens.HasBuffer(household))
                             {
-                                HouseholdMember member = householdMembers[j];
+                                logger.LogInfo("Has buffer.  Populating DynamicBuffer.");
+                                DynamicBuffer<HouseholdCitizen> householdCitizens = m_HouseholdCitizens[household];
+                                logger.LogInfo("Got householdCitizens DynamicBuffer.");
 
-                                Citizen memberCitizen = nativeArray2[];  
-                                    
-                            }
-
-                            for (int j = 0; j < householdCitizens.Length; j++)
-                            {
-                                logger.LogInfo("Inside for loop.");
-                                if (CitizenUIUtils.GetAge(m_EntityManager, householdCitizens[j].m_Citizen) == CitizenAgeKey.Child)
+                                for (var j = 0; j < householdCitizens.Length; j++)
                                 {
-                                    logger.LogInfo("Inside if statement");
-                                    message += "Citizen has a child.  enteringProbability reduced from " + enteringProbability.ToString() + " to ";
-                                    enteringProbability /= 4;
-                                    message += enteringProbability.ToString() + ".  ";
-                                }
+                                    logger.LogInfo("Inside for loop.");
+                                    Citizen citizen2 = m_EntityCitizen[householdCitizens[j].m_Citizen];
+                                    logger.LogInfo("Got citizen2.");
+                                    CitizenAge age2 = citizen2.GetAge();
+                                    logger.LogInfo("Got age2.");
 
+                                    if(age2 == CitizenAge.Child || age2 == CitizenAge.Teen || age2 == CitizenAge.Elderly)
+                                    {
+                                        logger.LogInfo("Inside if statement");
+                                        message += "Citizen has a dependent.  enteringProbability reduced from " + enteringProbability.ToString() + " to ";
+                                        enteringProbability /= 4;
+                                        message += enteringProbability.ToString() + ".  ";
+                                    }
+                                }
                             }
                         }
                     } catch (Exception e)
@@ -236,7 +241,7 @@ namespace ResponsibleCims
             public ComponentLookup<HouseholdMember> __Game_Citizens_HouseholdMember_RO_ComponentLookup;
 
             [ReadOnly]
-            public BufferTypeHandle<HouseholdCitizen> __Game_Citizens_HouseholdCitizen_RO_BufferTypeHandle;
+            public BufferLookup<HouseholdCitizen> __Game_Citizens_HouseholdCitizen_RO_BufferTypeHandle;
 
             [ReadOnly]
             public ComponentLookup<PropertyRenter> __Game_Buildings_PropertyRenter_RO_ComponentLookup;
@@ -262,6 +267,9 @@ namespace ResponsibleCims
             [ReadOnly]
             public ComponentLookup<TouristHousehold> __Game_Citizens_TouristHousehold_RO_ComponentLookup;
 
+            [ReadOnly]
+            public ComponentLookup<Citizen> __Game_Citizens_Citizen_RO_ComponentLookup;
+
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void __AssignHandles(ref SystemState state)
             {
@@ -278,6 +286,8 @@ namespace ResponsibleCims
                 __Game_Economy_Resources_RO_BufferLookup = state.GetBufferLookup<Resources>(isReadOnly: true);
                 __Game_City_ServiceFee_RO_BufferLookup = state.GetBufferLookup<ServiceFee>(isReadOnly: true);
                 __Game_Citizens_TouristHousehold_RO_ComponentLookup = state.GetComponentLookup<TouristHousehold>(isReadOnly: true);
+                __Game_Citizens_HouseholdCitizen_RO_BufferTypeHandle = state.GetBufferLookup<HouseholdCitizen>(isReadOnly: true);
+                __Game_Citizens_Citizen_RO_ComponentLookup = state.GetComponentLookup<Citizen>(isReadOnly: true);
             }
         }
 
@@ -361,13 +371,15 @@ namespace ResponsibleCims
             __TypeHandle.__Unity_Entities_Entity_TypeHandle.Update(ref base.CheckedStateRef);
             __TypeHandle.__Game_Citizens_Citizen_RW_ComponentTypeHandle.Update(ref base.CheckedStateRef);
             __TypeHandle.__Game_Simulation_UpdateFrame_SharedComponentTypeHandle.Update(ref base.CheckedStateRef);
+            __TypeHandle.__Game_Citizens_HouseholdCitizen_RO_BufferTypeHandle.Update(ref base.CheckedStateRef);
+            __TypeHandle.__Game_Citizens_Citizen_RO_ComponentLookup.Update(ref base.CheckedStateRef);
             ApplyToSchoolJob applyToSchoolJob = default(ApplyToSchoolJob);
             applyToSchoolJob.m_UpdateFrameType = __TypeHandle.__Game_Simulation_UpdateFrame_SharedComponentTypeHandle;
             applyToSchoolJob.m_CitizenType = __TypeHandle.__Game_Citizens_Citizen_RW_ComponentTypeHandle;
             applyToSchoolJob.m_EntityType = __TypeHandle.__Unity_Entities_Entity_TypeHandle;
             applyToSchoolJob.m_WorkerType = __TypeHandle.__Game_Citizens_Worker_RO_ComponentTypeHandle;
             applyToSchoolJob.m_HouseholdMembers = __TypeHandle.__Game_Citizens_HouseholdMember_RO_ComponentLookup;
-            applyToSchoolJob.m_HouseholdCitizenType = __TypeHandle.__Game_Citizens_HouseholdCitizen_RO_BufferTypeHandle;
+            applyToSchoolJob.m_HouseholdCitizens = __TypeHandle.__Game_Citizens_HouseholdCitizen_RO_BufferTypeHandle;
             applyToSchoolJob.m_PropertyRenters = __TypeHandle.__Game_Buildings_PropertyRenter_RO_ComponentLookup;
             applyToSchoolJob.m_CityModifiers = __TypeHandle.__Game_City_CityModifier_RO_BufferLookup;
             applyToSchoolJob.m_Prefabs = __TypeHandle.__Game_Prefabs_PrefabRef_RO_ComponentLookup;
@@ -383,7 +395,7 @@ namespace ResponsibleCims
             applyToSchoolJob.m_City = m_CitySystem.City;
             applyToSchoolJob.m_UpdateFrameIndex = updateFrameWithInterval;
             applyToSchoolJob.m_CommandBuffer = m_EndFrameBarrier.CreateCommandBuffer().AsParallelWriter();
-            applyToSchoolJob.m_EntityManager = base.EntityManager;
+            applyToSchoolJob.m_EntityCitizen = __TypeHandle.__Game_Citizens_Citizen_RO_ComponentLookup;
             ApplyToSchoolJob jobData = applyToSchoolJob;
             base.Dependency = JobChunkExtensions.ScheduleParallel(jobData, m_CitizenGroup, base.Dependency);
             m_EndFrameBarrier.AddJobHandleForProducer(base.Dependency);
