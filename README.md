@@ -28,7 +28,7 @@ Cim Behavior Improvement is a mod for Cities Skylines 2 that endeavors to improv
 - BepInEx 5
 
 ## Installation
-Place the `CimBehaviorImprovements.dll` file in your BepInEx `Plugins` folder.
+Place the `/Package/CimBehaviorImprovements.dll` file in your BepInEx `Plugins` folder.
 
 ## Known Issues
 - [x] ~~Apply to school logic not working~~
@@ -38,6 +38,9 @@ Place the `CimBehaviorImprovements.dll` file in your BepInEx `Plugins` folder.
   - Initial alpha build.
 - v.0.0.2 (11/24/2023)
   - Fixed ApplyToSchoolSystem logic so that it now successfully queries the household for dependent children and seniors.
+- v.1.0.0 (11/25/2023)
+  - Added student stipend
+  - Added logic to suppress high rent warnings for households with more than $1,000 cash on hand.
 
 ## Planned Features
 - User configurable options
