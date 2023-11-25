@@ -31,6 +31,8 @@ Place the `CimBehaviorImprovements.dll` file in your BepInEx `Plugins` folder.
 ## Changelog
 - v0.0.1 (11/24/2023)
   - Initial alpha build.
+- v.0.0.2 (11/24/2023)
+  - Fixed ApplyToSchoolSystem logic so that it now successfully queries the household for dependent children and seniors.
 
 ## Planned Features
 - User configurable options
