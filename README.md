@@ -2,7 +2,7 @@
 Cim Behavior Improvement is a mod for Cities Skylines 2 that endeavors to improve the behavioral AI for Cims, aligning their choices more with reality to better simulate the behavior of humans IRL.  The goal is to reduce the number of residential high rent warnings in the city caused by Cims who have living situations that are generally unrealistic and aren't something that the player can fix.
 
 > [!IMPORTANT]
-> Cities Skylines 2 modding is in a volatile state right now since Colossal Order has not yet released official modding tools.  Download and install mods at your own risk, and only download mods from their official sources (GitHub, Thunderstore).  Many websites steal mods from official sources, manipulate them to add malware, and upload them to unofficial websites.  This mod and all others that I develop will ONLY be available here on GitHub and should be considered the only official source.
+> Cities Skylines 2 modding is in a volatile state right now since Colossal Order has not yet released official modding tools.  Download and install mods at your own risk, and only download mods from their official sources (GitHub, Thunderstore).  Many websites steal mods from official sources, manipulate them to add malware, and upload them to unofficial websites.  This mod and all others that I develop will ONLY be available here on GitHub or Thunderstore and should be considered the only official sources.
 
 ## Features
 ### Adjusts the chance that an **adult** Cim will apply to school in the following ways:
