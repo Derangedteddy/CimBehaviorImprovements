@@ -27,37 +27,46 @@
   
   <ItemGroup>
     <Reference Include="Colossal.Collections">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Colossal.Collections.dll</HintPath>
+      <HintPath>..\lib\Colossal.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Colossal.Core">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Colossal.Core.dll</HintPath>
+      <HintPath>..\lib\Colossal.Core.dll</HintPath>
     </Reference>
     <Reference Include="Colossal.Mathematics">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Colossal.Mathematics.dll</HintPath>
+      <HintPath>..\lib\Colossal.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="Colossal.UI">
+      <HintPath>..\lib\Colossal.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Colossal.UI.Binding">
+      <HintPath>..\lib\Colossal.UI.Binding.dll</HintPath>
     </Reference>
     <Reference Include="Game">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Game.dll</HintPath>
+      <HintPath>..\lib\Game.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Burst">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Unity.Burst.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Burst.Unsafe">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Unity.Burst.Unsafe.dll</HintPath>
+      <HintPath>..\lib\Unity.Burst.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Collections">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Unity.Collections.dll</HintPath>
+      <HintPath>..\lib\Unity.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Collections.LowLevel.ILSupport">
+      <HintPath>..\lib\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Entities">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Unity.Entities.dll</HintPath>
+      <HintPath>..\lib\Unity.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Entities.UI">
+      <HintPath>..\lib\Unity.Entities.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\Unity.Mathematics.dll</HintPath>
+      <HintPath>..\lib\Unity.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\lib\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>E:\SteamLibrary\steamapps\common\Cities Skylines II\Cities2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\lib\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
